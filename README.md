@@ -14,6 +14,7 @@ O programa recebe um diretório contendo arquivos de texto com senhas criptograf
 ## Uso
 
 ```bash
+make
 ./quebra_senhas <diretorio_senhas>
 ```
 
