@@ -32,8 +32,7 @@ int main(int argc, char *argv[])
     // Inicia contagem de tempo
     auto start_time = std::chrono::high_resolution_clock::now();
 
-    struct timeval inicio, fim;
-    gettimeofday(&inicio, nullptr);
+
 
     DIR *dir = opendir(argv[1]);
     if (!dir)
@@ -87,7 +86,7 @@ int main(int argc, char *argv[])
 
         printf("Processando arquivo: %s\n", entry->d_name);
 
-        pid_t pid = fork();
+        const pid_t pid = fork();
         if (pid < 0)
         {
             perror("Erro ao criar processo");
@@ -111,25 +110,15 @@ int main(int argc, char *argv[])
 
     printf("[Aguardando término da força bruta - %d processos]\n", processos_criados);
 
-    while (wait(nullptr) > 0)
-        ;
+    while (wait(NULL) > 0) {    // Aguarda a finalização de todos os processos filhos
 
+    }
     printf("[Fim dos processos descendentes]\n");
-
-    gettimeofday(&fim, nullptr);
-    const long tempo_ms = (fim.tv_sec - inicio.tv_sec) * 1000 +
-                          (fim.tv_usec - inicio.tv_usec) / 1000;
-    printf("Tempo total de execução: %ldms\n", tempo_ms);
 
     // Calcula e exibe o tempo total de execução
     auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
     printf("Tempo total de execução: %lldms\n", duration.count());
 
     return 0;
 }
-
-// TIP See CLion help at <a
-// href="https://www.jetbrains.com/help/clion/">jetbrains.com/help/clion/</a>.
-//  Also, you can try interactive lessons for CLion by selecting
-//  'Help | Learn IDE Features' from the main menu.
